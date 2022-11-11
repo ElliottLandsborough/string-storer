@@ -15,8 +15,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", HomeHandler)
-	r.HandleFunc("/update", HomeHandler)
+	r.HandleFunc("/", HomeHandler).Methods("GET")
+	r.HandleFunc("/update", HomeHandler).Methods("POST")
 	http.Handle("/", r)
 
 	err := http.ListenAndServe(":8080", r)
