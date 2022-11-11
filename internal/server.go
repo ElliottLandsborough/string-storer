@@ -10,7 +10,7 @@ import (
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	name := "name"
-	fmt.Fprintf(w, "Hello, %s!", name)
+	fmt.Fprintf(w, "<h1> The saved string is %s", name)
 }
 
 func main() {
