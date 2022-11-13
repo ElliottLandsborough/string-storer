@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,21 +13,33 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type Stuff struct {
-	name string
+type Page struct {
+	title string
+}
+
+func newPage(title string) *Page {
+	p := Page{title: title}
+	return &p
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	name := "name"
-	fmt.Fprintf(w, "<h1> The saved string is %s", name)
+	name := "dynamic string"
+	fmt.Fprintf(w, "<h1>The saved string is %s</h1>", name)
+}
+
+func UpdateHandler(w http.ResponseWriter, r *http.Request) {
+	title := "derp"
+	p := newPage(title)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(p)
 }
 
 func main() {
 	var wait time.Duration
-
 	r := mux.NewRouter()
 	r.HandleFunc("/", HomeHandler).Methods("GET")
-	r.HandleFunc("/update", HomeHandler).Methods("POST")
+	r.HandleFunc("/update", UpdateHandler).Methods("POST")
 
 	srv := &http.Server{
 		Addr: "0.0.0.0:8080",
