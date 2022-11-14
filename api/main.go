@@ -121,5 +121,7 @@ func responseError(w http.ResponseWriter, message string, code int) {
 
 func responseJSON(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(data)
+	enc := json.NewEncoder(w)
+	enc.SetEscapeHTML(true)
+	enc.Encode(data)
 }
