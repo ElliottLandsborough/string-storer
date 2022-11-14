@@ -39,5 +39,11 @@ func createPostFromJson(data []byte) Post {
 	}
 	post.CreatedAt = time.Now().UTC()
 
+	cleanPost(post)
+
+	// Don't append, we only need one title at the moment
+	//posts = append(posts, post)
+	posts = []Post{*post}
+
 	return *post
 }

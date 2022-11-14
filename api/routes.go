@@ -23,11 +23,5 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 		responseError(w, err.Error(), http.StatusBadRequest)
 	}
 
-	cleanPost(&post)
-
-	// Don't append, we only need one title at the moment
-	//posts = append(posts, post)
-	posts = []Post{post}
-
 	responseJSON(w, post)
 }
