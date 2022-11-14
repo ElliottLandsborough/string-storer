@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"html"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -42,11 +43,18 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	post.CreatedAt = time.Now().UTC()
 
+	cleanPost(post)
+
 	// Don't append, we only need one title at the moment
 	//posts = append(posts, post)
 	posts = []Post{*post}
 
 	responseJSON(w, post)
+}
+
+func cleanPost(p *Post) *Post {
+	p.Title = html.EscapeString(p.Title)
+	return p
 }
 
 func createInitialPost() {
