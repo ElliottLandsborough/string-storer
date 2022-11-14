@@ -54,7 +54,7 @@ go test *.go
  - The JS is messy, could be minified and could be using a framework like react.
  - Project structure is not the official golang best practice. Work could be done here but there is no point if this microservice is staying as-is
  - Not much actual structure in the golang - could probably be separated out into some sort of DDD so that it can be expanded/edited easily later
- - No CI/CD or unit tests. I should add an integration test for each endpoint at minimum - and test all golang functions if possible. It would not be that hard to do for this tiny codebase
+ - Minimal CI/CD and unit tests. I should add an integration test for each endpoint at minimum - and test all golang functions if possible
  - I could also do integration tests on the front end. Not sure if this is necessary
  - The Nginx configs need to be changed between dev/prod when using docker. Maybe have two separate docker-compose files or some flags at least so that developers don't have to deal with this
  - I am not sure if this is best terraform practice. I don't have loads of experience with it
