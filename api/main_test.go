@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-var app App
-
 func TestCleanPost(t *testing.T) {
 	p := &Post{
 		Title:     "something<br />",
