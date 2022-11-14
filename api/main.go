@@ -11,36 +11,17 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2"
 )
 
 type Post struct {
-	Title     string    `json:"text" bson:"text"`
-	CreatedAt time.Time `json:"createdAt" bson:"created_at"`
+	Title     string
+	CreatedAt time.Time
 }
 
-var posts *mgo.Collection
+var posts []Post
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	// Connect to mongo
-	session, err := mgo.Dial("mongo:27100")
-	if err != nil {
-		log.Println("MongoDB error:")
-		log.Println(err)
-		os.Exit(1)
-	}
-	defer session.Close()
-	session.SetMode(mgo.Monotonic, true)
-
-	// Get posts collection
-	posts = session.DB("app").C("posts")
-
-	result := []Post{}
-	if err := posts.Find(nil).Sort("-created_at").All(&result); err != nil {
-		responseError(w, err.Error(), http.StatusInternalServerError)
-	} else {
-		responseJSON(w, result)
-	}
+	responseJSON(w, posts)
 }
 
 func updateHandler(w http.ResponseWriter, r *http.Request) {
@@ -60,33 +41,27 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	post.CreatedAt = time.Now().UTC()
 
-	// Insert new post
-	if err := posts.Insert(post); err != nil {
-		responseError(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	//posts = append(posts, post)
+	posts = []Post{*post}
 
 	responseJSON(w, post)
 }
 
-func getAllPosts() {
-	// Connect to mongo
-	session, err := mgo.Dial("mongo:27100")
-	if err != nil {
-		log.Println("MongoDB error:")
-		log.Println(err)
-		os.Exit(1)
+func createInitialPost() {
+	post := Post{ // b == Student{"Bob", 0}
+		Title:     "dynamic string",
+		CreatedAt: time.Now().UTC(),
 	}
-	defer session.Close()
-	session.SetMode(mgo.Monotonic, true)
 
-	// Get posts collection
-	posts = session.DB("app").C("posts")
+	//posts = append(posts, post)
+	posts = []Post{post}
 }
 
 func main() {
-	getAllPosts()
+	createInitialPost()
+
 	var wait time.Duration
+
 	r := mux.NewRouter()
 	r.HandleFunc("/home", homeHandler).Methods("GET")
 	r.HandleFunc("/update", updateHandler).Methods("POST")
