@@ -1,0 +1,7 @@
+jobs:
+  build:
+    docker:
+      - image: cimg/go:1.19.3
+    steps:
+      - checkout
+      - run: cd api && go test *.go
