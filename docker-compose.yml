@@ -9,6 +9,7 @@ services:
       - './api:/go/src/app'
   web:
     container_name: 'web'
+    build: './web'
     image: 'nginx:latest'
     ports:
       - '8081:80'
