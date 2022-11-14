@@ -37,7 +37,7 @@ func TestCreatePostFromJson(t *testing.T) {
 	expected := expectedPost.Title
 
 	if actual != expected {
-		t.Errorf("expected 'hello world', got '%s'", actual)
+		t.Errorf("expected '%s', got '%s'", expected, actual)
 	}
 }
 
@@ -55,6 +55,24 @@ func TestCreatePostFromBadJson(t *testing.T) {
 	expected := expectedPost.Title
 
 	if actual != expected {
-		t.Errorf("expected 'hello world', got '%s'", actual)
+		t.Errorf("expected '%s', got '%s'", expected, actual)
+	}
+}
+
+func TestCreateHugePostFromJson(t *testing.T) {
+	json := []byte("{\"title\":\"----------------------------------------------------------------------------------------------------Z\"}")
+
+	actualPost := createPostFromJson(json)
+
+	expectedPost := &Post{
+		Title:     "----------------------------------------------------------------------------------------------------",
+		CreatedAt: time.Now().UTC(),
+	}
+
+	actual := actualPost.Title
+	expected := expectedPost.Title
+
+	if actual != expected {
+		t.Errorf("expected '%s', got '%s'", expected, actual)
 	}
 }

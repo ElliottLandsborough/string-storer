@@ -38,6 +38,12 @@ formElement.addEventListener("submit", function(evt) {
 function submitForm() {
     var titleInput = document.getElementById("title-input");
     var title = titleInput.value;
+
+    // limit input to 100 chars
+    if (title.length > 100) {
+        title = title.slice(0, 100)
+    }
+
     postTitleToApi(title);
 }
 

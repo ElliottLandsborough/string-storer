@@ -14,8 +14,19 @@ type Post struct {
 var posts []Post
 
 func cleanPost(p *Post) *Post {
-	p.Title = html.EscapeString(p.Title)
+	p.Title = html.EscapeString(firstN(p.Title, 100))
 	return p
+}
+
+func firstN(s string, n int) string {
+	i := 0
+	for j := range s {
+		if i == n {
+			return s[:j]
+		}
+		i++
+	}
+	return s
 }
 
 func createInitialPost() {
