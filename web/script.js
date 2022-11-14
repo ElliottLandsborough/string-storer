@@ -22,7 +22,7 @@ function getPosts() {
         }
     };
 
-    xhr.open("GET", "http://localhost:8080/posts", true);
+    xhr.open("GET", "/api/posts", true);
     xhr.send();
 }
 
@@ -59,7 +59,7 @@ function postTitleToApi(title) {
         }
     };
 
-    xhr.open("POST", "http://localhost:8080/posts");
+    xhr.open("POST", "/api/posts");
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.send(JSON.stringify({
         Title: title
