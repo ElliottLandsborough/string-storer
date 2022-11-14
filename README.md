@@ -36,6 +36,7 @@ curl -X POST http://0.0.0.0:8080/posts -H 'Content-Type: application/json' -d '{
 ## What is wrong with this solution?
 
  - It doesn't have a shared state - e.g. a database, mongo/dynamo/MySQL. This means that if I scale it up the dynamic string won't be consistent between http requests
+ - The above also means that if I redeploy or any of the containers crash they will lose the current state and revert back to the default title
  - I think the golang garbage collection would mean this won't balloon in ram - If I made it so that it saved history of posted items It would fill up ram. Solvable with above point
  - Use better input cleansing if storing in MySQL
  - There is no input length limit. I should add this at both JS and Golang level. You could probably DoS attack this with a large enough string if Nginx wasn't in front of it.
