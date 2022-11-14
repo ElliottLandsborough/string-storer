@@ -1,5 +1,7 @@
 # String Storer
 
+[![CircleCI](https://circleci.com/gh/ElliottLandsborough/string-storer.svg?style=svg)](https://circleci.com/gh/ElliottLandsborough/string-storer)
+
 ## Live demo
 
 http://string-storer-lb-tf-663390881.eu-west-2.elb.amazonaws.com/
