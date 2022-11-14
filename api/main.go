@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 type Post struct {
@@ -41,6 +42,7 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	post.CreatedAt = time.Now().UTC()
 
+	// Don't append, we only need one title at the moment
 	//posts = append(posts, post)
 	posts = []Post{*post}
 
@@ -53,6 +55,7 @@ func createInitialPost() {
 		CreatedAt: time.Now().UTC(),
 	}
 
+	// Don't append, we only need one title at the moment
 	//posts = append(posts, post)
 	posts = []Post{post}
 }
@@ -63,8 +66,15 @@ func main() {
 	var wait time.Duration
 
 	r := mux.NewRouter()
-	r.HandleFunc("/home", homeHandler).Methods("GET")
-	r.HandleFunc("/update", updateHandler).Methods("POST")
+	r.HandleFunc("/posts", homeHandler).Methods("GET")
+	r.HandleFunc("/posts", updateHandler).Methods("POST")
+
+	cor := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:8081", "http://localhost:8080"},
+		//AllowCredentials: true,
+	})
+
+	handler := cor.Handler(r)
 
 	srv := &http.Server{
 		Addr: "0.0.0.0:8080",
@@ -72,7 +82,7 @@ func main() {
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
 		IdleTimeout:  time.Second * 60,
-		Handler:      r, // Pass our instance of gorilla/mux in.
+		Handler:      handler, // Pass our instance of gorilla/mux in.
 	}
 
 	// Run our server in a goroutine so that it doesn't block.
