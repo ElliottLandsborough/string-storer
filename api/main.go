@@ -77,7 +77,7 @@ func main() {
 	r.HandleFunc("/posts", updateHandler).Methods("POST")
 
 	cor := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:8081", "http://localhost:8080"},
+		AllowedOrigins: []string{"http://localhost:8081", "http://localhost:8080", "http://string-storer-lb-tf-663390881.eu-west-2.elb.amazonaws.com:80"},
 		//AllowCredentials: true,
 	})
 

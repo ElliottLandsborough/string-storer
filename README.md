@@ -1,6 +1,12 @@
 # string-storer
 
+## Live demo
+
+http://string-storer-lb-tf-663390881.eu-west-2.elb.amazonaws.com/
+
 ## Run with docker
+
+
 
 ```bash
 docker-compose up -d

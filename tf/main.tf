@@ -39,19 +39,6 @@ resource "aws_ecs_task_definition" "string_storer_task" {
   container_definitions    = <<DEFINITION
   [
     {
-      "name": "web",
-      "image": "${aws_ecr_repository.string_storer_web_repo.repository_url}",
-      "essential": true,
-      "portMappings": [
-        {
-          "containerPort": 80,
-          "hostPort": 80
-        }
-      ],
-      "memory": 256,
-      "cpu": 128
-    },
-    {
       "name": "api",
       "image": "${aws_ecr_repository.string_storer_api_repo.repository_url}",
       "essential": true,
@@ -59,6 +46,19 @@ resource "aws_ecs_task_definition" "string_storer_task" {
         {
           "containerPort": 8080,
           "hostPort": 8080
+        }
+      ],
+      "memory": 256,
+      "cpu": 128
+    },
+    {
+      "name": "web",
+      "image": "${aws_ecr_repository.string_storer_web_repo.repository_url}",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
         }
       ],
       "memory": 256,
