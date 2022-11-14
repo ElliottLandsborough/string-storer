@@ -36,7 +36,8 @@ curl -X POST http://0.0.0.0:8080/posts -H 'Content-Type: application/json' -d '{
 ## What is wrong with this solution?
 
  - It doesn't have a shared state - e.g. a database, mongo/dynamo/MySQL. This means that if I scale it up the dynamic string won't be consistent between http requests
- - I think the golang garbage collection would mean this won't balloon in ram - If I made it so that it saved history of posted items It would fill up ram. Solvable with above point.
+ - I think the golang garbage collection would mean this won't balloon in ram - If I made it so that it saved history of posted items It would fill up ram. Solvable with above point
+ - Use better input cleansing if storing in MySQL
  - Not using https, not a great idea. I could fix this easily with a CNAME and cloud flare for free if it needed to go live.
  - There is no monitoring at all. I wouldn't know if the containers crashed. Need to add exception monitoring to the golang too.
  - The JS is messy, could be minified and could be using a framework like react.
