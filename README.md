@@ -1,4 +1,4 @@
-# string-storer
+# String Storer
 
 ## Live demo
 
