@@ -3,38 +3,86 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Dockerized Posts</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
-  <h1>Dockerized Posts</h1>
+  <h1 id="title"></h1>
   <form id="form">
     <input type="text"
-           placeholder="New post..."
-           id="post-input">
+           placeholder="New title..."
+           id="title-input">
   </form>
-  <div id="posts"></div>
   <script>
-    $(document).ready(function() {
-      $.get('http://localhost:8080/posts', function(posts) {
-        $list = $('#posts');
-        for (var i = 0; i < posts.length; i++) {
-          $list.append('<p>' + posts[i].text + '</p>');
-        }
-      });
-      $('#form').submit(function(event) {
-        event.preventDefault();
-        var text = $('#post-input').val();
-        $.post(
-          'http://localhost:8080/posts',
-          JSON.stringify({text: text}),
-          function() {
-            location.reload();
+    function getPosts() {
+      var xhr  = new XMLHttpRequest();
+
+      // Setup our listener to process compeleted requests
+      xhr.onreadystatechange = function () {
+
+        // Only run if the request is complete
+        if (xhr.readyState !== 4) return;
+
+        // Process our return data
+        if (xhr.status >= 200 && xhr.status < 300) {
+          result = JSON.parse(xhr.responseText);
+          
+          for (var i = 0; i < result.length; i++) {
+            setTitle(result[i].Title);
+            // Api only returns one post at the moment
+            break;
           }
-        );
-      });
+        } else {
+          // What to do when the request has failed
+          console.log('error', xhr);
+        }
+      };
+
+      xhr.open("GET", "http://localhost:8080/posts", true);
+      xhr.send();
+    }
+
+    getPosts();
+
+    var formElement = document.getElementById("form");
+    
+    formElement.addEventListener("submit", function(evt) {
+      evt.preventDefault();
+      submitForm();
     });
+
+    function submitForm() {
+      var titleInput = document.getElementById("title-input");
+      var title = titleInput.value;
+      postTitleToApi(title);
+    }
+
+    function postTitleToApi(title) {
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function () {
+
+        // Only run if the request is complete
+        if (xhr.readyState !== 4) return;
+
+        // Process our return data
+        if (xhr.status >= 200 && xhr.status < 300) {
+          result = JSON.parse(xhr.responseText);
+          setTitle(result.Title);
+        } else {
+          // What to do when the request has failed
+          console.log('error', xhr);
+        }
+      };
+
+      xhr.open("POST", "http://localhost:8080/posts");
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify({Title: title}));
+    }
+
+    function setTitle(title) {
+      document.getElementById("title").innerHTML = 'The saved string is ' + title;
+    }
   </script>
 </body>
 
