@@ -17,3 +17,7 @@ docker push 633322954385.dkr.ecr.eu-west-2.amazonaws.com/string-storer-web:lates
 cd tf
 terraform init
 terraform apply
+cd ../
+
+# Redeploy ECS
+aws ecs update-service --cluster string-storer-cluster --service string-storer-service --force-new-deployment
