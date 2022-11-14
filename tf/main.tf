@@ -39,7 +39,7 @@ resource "aws_ecs_task_definition" "string_storer_task" {
   container_definitions    = <<DEFINITION
   [
     {
-      "name": "string-storer-web-task",
+      "name": "web",
       "image": "${aws_ecr_repository.string_storer_web_repo.repository_url}",
       "essential": true,
       "portMappings": [
@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "string_storer_task" {
       "cpu": 128
     },
     {
-      "name": "string-storer-api-task",
+      "name": "api",
       "image": "${aws_ecr_repository.string_storer_api_repo.repository_url}",
       "essential": true,
       "portMappings": [
@@ -104,7 +104,7 @@ resource "aws_ecs_service" "string_storer_service" {
   load_balancer {
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # Referencing our target group
     #container_name   = "${aws_ecs_task_definition.string_storer_task.family}"
-    container_name   = "string-storer-web-task"
+    container_name   = "web"
     container_port   = 80 # Specifying the container port
   }
 
