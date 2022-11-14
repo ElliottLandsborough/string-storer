@@ -47,7 +47,7 @@ go test *.go
 
  - It doesn't have a shared state - e.g. a database, mongo/dynamo/MySQL. This means that if I scale it up the dynamic string won't be consistent between http requests (right now the 'desired_count' is set to 1)
  - The above also means that if I redeploy (or if the api container crashes) it will lose its current state and revert back to the default title
- - I think the golang garbage collection would mean this won't balloon in ram - If I made it so that it saved history of posted items It would fill up ram. Solvable with above point about database/shared state
+ - If I made it so that it saved history of posted items It would fill up ram. Solvable with above point about database/shared state
  - Use better input cleansing if storing in MySQL or similar. Right now I store the raw string in memory and then just clean it up when I output it. It might be wise to strip HTML or even limit input entirely to [A-Z0-9] and space. Unless we need multilanguage. It really depends on the use case.
  - I'm not using https. This is not a great idea. I could fix this easily with a CNAME and cloud flare for free if it needed to go live quickly.
  - There is no monitoring at all. I wouldn't know if the containers crashed. Need to add exception monitoring to the golang too.
