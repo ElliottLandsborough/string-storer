@@ -3,5 +3,6 @@ jobs:
     docker:
       - image: cimg/go:1.19.3
     steps:
-      - checkout
+      - checkout:
+          method: blobless
       - run: cd api && go test *.go
